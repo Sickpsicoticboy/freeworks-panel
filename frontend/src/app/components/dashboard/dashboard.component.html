@@ -1,0 +1,64 @@
+<h1>Tablero de proyectos</h1>
+<p class="muted">Resumen del estado de tus proyectos freelance.</p>
+
+@if (cargando) {
+  <p>Cargando...</p>
+} @else {
+  @if (atrasados.length > 0) {
+    <div class="alert">
+      <strong>&#9888; {{ atrasados.length }} proyecto(s) atrasado(s):</strong>
+      @for (p of atrasados; track p.id) {
+        <a [routerLink]="['/proyectos', p.id]">{{ p.nombre }}</a>
+      }
+    </div>
+  }
+
+  <div class="stats-grid">
+    <div class="card stat">
+      <span class="stat-num">{{ total }}</span>
+      <span class="stat-label">Total proyectos</span>
+    </div>
+    <div class="card stat">
+      <span class="stat-num" style="color: var(--primary)">{{ enProgreso }}</span>
+      <span class="stat-label">En progreso</span>
+    </div>
+    <div class="card stat">
+      <span class="stat-num" style="color: var(--success)">{{ finalizados }}</span>
+      <span class="stat-label">Finalizados</span>
+    </div>
+    <div class="card stat">
+      <span class="stat-num" style="color: var(--danger)">{{ atrasados.length }}</span>
+      <span class="stat-label">Atrasados</span>
+    </div>
+  </div>
+
+  <div class="panel-grid">
+    <div class="card center">
+      <h3>Progreso global</h3>
+      <svg width="140" height="140" viewBox="0 0 120 120" role="img" aria-label="Progreso global">
+        <circle cx="60" cy="60" r="52" fill="none" stroke="var(--border)" stroke-width="12"/>
+        <circle cx="60" cy="60" r="52" fill="none" stroke="var(--primary)" stroke-width="12"
+                stroke-linecap="round" [attr.stroke-dasharray]="dashArray"
+                transform="rotate(-90 60 60)"/>
+        <text x="60" y="66" text-anchor="middle" font-size="22" font-weight="700"
+              fill="var(--text)">{{ progresoGlobal }}%</text>
+      </svg>
+      <p class="muted">Promedio de avance de todos los proyectos</p>
+    </div>
+
+    <div class="card">
+      <h3>Avance por proyecto</h3>
+      @for (p of proyectos; track p.id) {
+        <div class="row">
+          <a [routerLink]="['/proyectos', p.id]">{{ p.nombre }}</a>
+          <span class="badge" [class]="p.estado_calculado">{{ p.estado_calculado }}</span>
+        </div>
+        <div class="progress" style="margin-bottom: 1rem">
+          <div [class.full]="p.progreso === 100" [style.width.%]="p.progreso"></div>
+        </div>
+      } @empty {
+        <p class="muted">Aún no hay proyectos. <a routerLink="/proyectos/nuevo">Crea el primero</a>.</p>
+      }
+    </div>
+  </div>
+}
