@@ -1,0 +1,78 @@
+<h1>Proyectos</h1>
+
+<div class="card filtros">
+  <div class="field">
+    <label>Buscar</label>
+    <input type="text" placeholder="Nombre de proyecto o entregable..."
+           [(ngModel)]="filtros.q" (keyup.enter)="buscar()">
+  </div>
+  <div class="field">
+    <label>Cliente</label>
+    <select [(ngModel)]="filtros.cliente" (change)="buscar()">
+      <option value="">Todos</option>
+      @for (c of clientes; track c.id) {
+        <option [value]="c.id">{{ c.nombre }}</option>
+      }
+    </select>
+  </div>
+  <div class="field">
+    <label>Estado</label>
+    <select [(ngModel)]="filtros.estado" (change)="buscar()">
+      <option value="">Todos</option>
+      <option value="EN_PROGRESO">En progreso</option>
+      <option value="FINALIZADO">Finalizado</option>
+      <option value="ATRASADO">Atrasado</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>Prioridad</label>
+    <select [(ngModel)]="filtros.prioridad" (change)="buscar()">
+      <option value="">Todas</option>
+      <option value="ALTA">Alta</option>
+      <option value="MEDIA">Media</option>
+      <option value="BAJA">Baja</option>
+    </select>
+  </div>
+  <div class="acciones">
+    <button class="btn" (click)="buscar()">Buscar</button>
+    <button class="btn secondary" (click)="limpiar()">Limpiar</button>
+  </div>
+</div>
+
+@if (cargando) {
+  <p>Cargando...</p>
+} @else {
+  <div class="card tabla-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Proyecto</th>
+          <th class="hide-mobile">Cliente</th>
+          <th>Estado</th>
+          <th class="hide-mobile">Prioridad</th>
+          <th class="hide-mobile">Fecha límite</th>
+          <th>Progreso</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of proyectos; track p.id) {
+          <tr>
+            <td><a [routerLink]="['/proyectos', p.id]">{{ p.nombre }}</a></td>
+            <td class="hide-mobile">{{ p.cliente_nombre }}</td>
+            <td><span class="badge" [class]="p.estado_calculado">{{ p.estado_calculado }}</span></td>
+            <td class="hide-mobile"><span class="badge" [class]="p.prioridad">{{ p.prioridad }}</span></td>
+            <td class="hide-mobile">{{ p.fecha_limite }}</td>
+            <td style="min-width:110px">
+              <div class="progress"><div [class.full]="p.progreso === 100" [style.width.%]="p.progreso"></div></div>
+              <small>{{ p.progreso }}%</small>
+            </td>
+            <td><button class="btn danger sm" (click)="eliminar(p)">&#10005;</button></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="7" class="empty">Sin resultados para los filtros aplicados.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

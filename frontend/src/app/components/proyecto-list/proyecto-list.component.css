@@ -1,0 +1,14 @@
+.filtros {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 1rem; align-items: end; margin-bottom: 1rem;
+}
+.filtros .field { margin-bottom: 0; }
+.acciones { display: flex; gap: .5rem; }
+.tabla-wrap { padding: 0; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { text-align: left; padding: .75rem 1rem; border-bottom: 1px solid var(--border); }
+th { color: var(--text-muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; }
+tbody tr:hover { background: #f8fafc; }
+.empty { text-align: center; color: var(--text-muted); padding: 2rem; }
+.btn.sm { padding: .3rem .55rem; font-size: .75rem; }
+@media (max-width: 720px) { .filtros { grid-template-columns: 1fr 1fr; } }
