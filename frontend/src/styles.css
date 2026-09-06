@@ -1,0 +1,75 @@
+/* ===== FreeWorks - estilos globales ===== */
+:root {
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --bg: #f4f5fb;
+  --surface: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(15, 23, 42, .08), 0 4px 12px rgba(15, 23, 42, .05);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+h1, h2, h3 { margin: 0 0 .5rem; }
+a { color: var(--primary); text-decoration: none; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .55rem 1rem; border-radius: 8px; border: 1px solid transparent;
+  background: var(--primary); color: #fff; font-weight: 600; font-size: .875rem;
+  cursor: pointer; transition: background .15s;
+}
+.btn:hover { background: var(--primary-dark); }
+.btn.secondary { background: transparent; color: var(--primary); border-color: var(--primary); }
+.btn.danger { background: var(--danger); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.badge {
+  display: inline-block; padding: .2rem .6rem; border-radius: 999px;
+  font-size: .75rem; font-weight: 600;
+}
+.badge.EN_PROGRESO { background: #e0e7ff; color: var(--primary-dark); }
+.badge.FINALIZADO { background: #dcfce7; color: var(--success); }
+.badge.ATRASADO   { background: #fee2e2; color: var(--danger); }
+.badge.ALTA  { background: #fee2e2; color: var(--danger); }
+.badge.MEDIA { background: #fef3c7; color: var(--warning); }
+.badge.BAJA  { background: #f1f5f9; color: var(--text-muted); }
+
+input, select, textarea {
+  width: 100%; padding: .55rem .75rem; border: 1px solid var(--border);
+  border-radius: 8px; font: inherit; background: #fff;
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--primary); outline-offset: 1px; border-color: var(--primary);
+}
+input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
+  border-color: var(--danger);
+}
+.field { margin-bottom: 1rem; }
+.field label { display: block; font-size: .8rem; font-weight: 600; margin-bottom: .3rem; color: var(--text-muted); }
+.error-msg { color: var(--danger); font-size: .78rem; margin-top: .25rem; }
+
+.progress { background: var(--border); border-radius: 999px; height: 8px; overflow: hidden; }
+.progress > div { height: 100%; background: var(--primary); border-radius: 999px; transition: width .3s; }
+.progress > div.full { background: var(--success); }
+
+@media (max-width: 720px) {
+  .hide-mobile { display: none; }
+}

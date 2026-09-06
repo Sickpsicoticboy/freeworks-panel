@@ -1,0 +1,13 @@
+<header class="topbar">
+  <div class="topbar-inner">
+    <a routerLink="/" class="brand">Free<span>Works</span></a>
+    <nav>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Tablero</a>
+      <a routerLink="/proyectos" routerLinkActive="active">Proyectos</a>
+      <a routerLink="/proyectos/nuevo" class="btn">+ Nuevo proyecto</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+  <router-outlet />
+</main>
