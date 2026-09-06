@@ -1,0 +1,22 @@
+.head { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+.muted { color: var(--text-muted); }
+.small { font-size: .8rem; }
+.alert {
+  background: #fef2f2; border: 1px solid #fecaca; color: var(--danger);
+  border-radius: var(--radius); padding: .75rem 1rem; margin: 1rem 0;
+}
+.estado-card { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+.progress.big { height: 12px; width: 260px; margin: .5rem 0 .25rem; }
+.estado-botones { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem; }
+.sub-form { border: 1px dashed var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+.entregable {
+  display: flex; gap: .75rem; align-items: start;
+  padding: .6rem 0; border-bottom: 1px solid var(--border);
+}
+.entregable input[type=checkbox] { width: auto; margin-top: .25rem; }
+.entregable.done strong { text-decoration: line-through; color: var(--text-muted); }
+.comentario { border-bottom: 1px solid var(--border); padding: .6rem 0; }
+.comentario p { margin: .25rem 0 0; }
+@media (max-width: 900px) { .detail-grid { grid-template-columns: 1fr; } }

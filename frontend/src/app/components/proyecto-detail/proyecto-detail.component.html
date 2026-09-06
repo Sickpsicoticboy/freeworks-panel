@@ -1,0 +1,120 @@
+@if (proyecto) {
+  <div class="head">
+    <div>
+      <h1>{{ proyecto.nombre }}</h1>
+      <p class="muted">
+        Cliente: <strong>{{ proyecto.cliente_nombre }}</strong> ·
+        <span class="badge" [class]="proyecto.prioridad">{{ proyecto.prioridad }}</span> ·
+        {{ proyecto.fecha_inicio }} &rarr; {{ proyecto.fecha_limite }}
+      </p>
+      <p>{{ proyecto.descripcion }}</p>
+    </div>
+    <a [routerLink]="['/proyectos', proyecto.id, 'editar']" class="btn secondary">Editar</a>
+  </div>
+
+  @if (proyecto.atrasado) {
+    <div class="alert">&#9888; Este proyecto está atrasado: la fecha límite venció y el avance es {{ proyecto.progreso }}%.</div>
+  }
+
+  <div class="card estado-card">
+    <div>
+      <h3>Estado: <span class="badge" [class]="proyecto.estado_calculado">{{ proyecto.estado_calculado }}</span></h3>
+      <div class="progress big"><div [class.full]="proyecto.progreso === 100" [style.width.%]="proyecto.progreso"></div></div>
+      <small>{{ proyecto.progreso }}% entregado</small>
+    </div>
+    <div class="estado-botones">
+      <span class="muted">Cambiar estado manualmente:</span>
+      <button class="btn secondary" (click)="cambiarEstado('EN_PROGRESO')">En progreso</button>
+      <button class="btn" (click)="cambiarEstado('FINALIZADO')">Finalizado</button>
+    </div>
+  </div>
+
+  <div class="detail-grid">
+    <!-- Entregables -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Entregables</h3>
+        <button class="btn secondary" (click)="mostrarFormEntregable = !mostrarFormEntregable">
+          {{ mostrarFormEntregable ? 'Cerrar' : '+ Agregar' }}
+        </button>
+      </div>
+
+      @if (mostrarFormEntregable) {
+        <form class="sub-form" [formGroup]="formEntregable" (ngSubmit)="agregarEntregable()">
+          <div class="field">
+            <label>Título *</label>
+            <input formControlName="titulo" placeholder="Ej: Mockups de la home">
+            @if (c('e','titulo')?.touched && c('e','titulo')?.invalid) {
+              <div class="error-msg">Título obligatorio (mín. 3 caracteres).</div>
+            }
+          </div>
+          <div class="field">
+            <label>Descripción</label>
+            <input formControlName="descripcion" placeholder="Detalle del entregable">
+          </div>
+          <div class="field">
+            <label>Fecha *</label>
+            <input type="date" formControlName="fecha">
+            @if (c('e','fecha')?.touched && c('e','fecha')?.invalid) {
+              <div class="error-msg">La fecha es obligatoria.</div>
+            }
+          </div>
+          <div class="field">
+            <label>Archivo (simulado)</label>
+            <input formControlName="archivo_nombre" placeholder="Ej: entrega_v1.zip">
+          </div>
+          @if (errorApi) { <div class="error-msg">{{ errorApi }}</div> }
+          <button type="submit" class="btn">Guardar entregable</button>
+        </form>
+      }
+
+      @for (e of proyecto.entregables; track e.id) {
+        <div class="entregable" [class.done]="e.completado">
+          <input type="checkbox" [checked]="e.completado" (change)="toggleCompletado(e)"
+                 title="Marcar completado">
+          <div>
+            <strong>{{ e.titulo }}</strong>
+            <div class="muted small">{{ e.fecha }} @if (e.archivo_nombre) { · &#128206; {{ e.archivo_nombre }} }</div>
+            @if (e.descripcion) { <div class="small">{{ e.descripcion }}</div> }
+          </div>
+        </div>
+      } @empty {
+        <p class="muted">Sin entregables aún.</p>
+      }
+    </div>
+
+    <!-- Comentarios del cliente -->
+    <div class="card">
+      <h3>Comentarios del cliente</h3>
+      <form class="sub-form" [formGroup]="formComentario" (ngSubmit)="agregarComentario()">
+        <div class="field">
+          <label>Autor *</label>
+          <input formControlName="autor" placeholder="Nombre del cliente">
+          @if (c('c','autor')?.touched && c('c','autor')?.invalid) {
+            <div class="error-msg">El autor es obligatorio.</div>
+          }
+        </div>
+        <div class="field">
+          <label>Comentario *</label>
+          <textarea formControlName="texto" rows="2" placeholder="Escribe un comentario..."></textarea>
+          @if (c('c','texto')?.touched && c('c','texto')?.invalid) {
+            <div class="error-msg">Comentario obligatorio (mín. 5 caracteres).</div>
+          }
+        </div>
+        <button type="submit" class="btn">Comentar</button>
+      </form>
+
+      @for (com of proyecto.comentarios; track com.id) {
+        <div class="comentario">
+          <strong>{{ com.autor }}</strong>
+          <span class="muted small">{{ com.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+          <p>{{ com.texto }}</p>
+        </div>
+      } @empty {
+        <p class="muted">Sin comentarios aún.</p>
+      }
+    </div>
+  </div>
+} @else {
+  <p>Cargando...</p>
+}
