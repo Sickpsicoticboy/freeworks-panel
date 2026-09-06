@@ -1,0 +1,71 @@
+<h1>{{ editandoId ? 'Editar' : 'Nuevo' }} proyecto</h1>
+
+<form class="card form" [formGroup]="form" (ngSubmit)="guardar()">
+  <div class="field">
+    <label>Nombre *</label>
+    <input type="text" formControlName="nombre" placeholder="Ej: Sitio corporativo">
+    @if (campo('nombre')?.touched && campo('nombre')?.errors?.['required']) {
+      <div class="error-msg">El nombre es obligatorio.</div>
+    }
+    @if (campo('nombre')?.touched && campo('nombre')?.errors?.['minlength']) {
+      <div class="error-msg">Mínimo 3 caracteres.</div>
+    }
+  </div>
+
+  <div class="field">
+    <label>Descripción</label>
+    <textarea formControlName="descripcion" rows="3" placeholder="Breve descripción del proyecto"></textarea>
+  </div>
+
+  <div class="grid-2">
+    <div class="field">
+      <label>Cliente *</label>
+      <select formControlName="cliente">
+        <option value="">Seleccione...</option>
+        @for (c of clientes; track c.id) {
+          <option [value]="c.id">{{ c.nombre }}</option>
+        }
+      </select>
+      @if (campo('cliente')?.touched && campo('cliente')?.errors?.['required']) {
+        <div class="error-msg">Debe seleccionar un cliente.</div>
+      }
+    </div>
+    <div class="field">
+      <label>Prioridad *</label>
+      <select formControlName="prioridad">
+        <option value="ALTA">Alta</option>
+        <option value="MEDIA">Media</option>
+        <option value="BAJA">Baja</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="field">
+      <label>Fecha de inicio *</label>
+      <input type="date" formControlName="fecha_inicio">
+      @if (campo('fecha_inicio')?.touched && campo('fecha_inicio')?.errors?.['required']) {
+        <div class="error-msg">La fecha de inicio es obligatoria.</div>
+      }
+    </div>
+    <div class="field">
+      <label>Fecha límite *</label>
+      <input type="date" formControlName="fecha_limite">
+      @if (campo('fecha_limite')?.touched && campo('fecha_limite')?.errors?.['required']) {
+        <div class="error-msg">La fecha límite es obligatoria.</div>
+      }
+    </div>
+  </div>
+
+  @if (form.errors?.['fechas'] && form.touched) {
+    <div class="error-msg">La fecha límite no puede ser anterior a la fecha de inicio.</div>
+  }
+  @if (errorApi) {
+    <div class="error-msg">Error del servidor: {{ errorApi }}</div>
+  }
+
+  <div class="acciones">
+    <button type="submit" class="btn" [disabled]="form.invalid && form.touched">Guardar</button>
+    <a routerLink="/proyectos" class="btn secondary">Cancelar</a>
+  </div>
+</form>
