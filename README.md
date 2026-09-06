@@ -85,3 +85,5 @@ automáticamente al iniciar.
 
 Ramas `feature/*` integradas a `main` mediante merge, con commits atómicos
 y descriptivos (ver historial).
+## Autores
+- Roberto Farías
